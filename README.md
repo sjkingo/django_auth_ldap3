@@ -10,7 +10,7 @@ has been tested against OpenLDAP and Microsoft's Active Directory.
 
 It supports Django 1.7+ and Python 3.3+.
 
-### Installation
+## Installation
 
 The easiest way is to install from [PyPi](https://pypi.python.org/pypi/django_auth_ldap3) using pip:
 
@@ -24,7 +24,7 @@ Alternatively you may install from the latest commit on the `master` branch:
 $ pip install -e git+https://github.com/sjkingo/django_auth_ldap3.git#egg=django_auth_ldap3
 ```
 
-### Base configuration
+## Base configuration
 
 1. First, add the LDAP backend to Django's `AUTHENTICATION_BACKENDS` tuple in `settings.py`:
 
@@ -52,11 +52,11 @@ $ pip install -e git+https://github.com/sjkingo/django_auth_ldap3.git#egg=django
    * `AUTH_LDAP_BASE_DN` must be set to the base container to perform any subtree
    searches from.
 
-### Configuration for authenticating
+## Configuration for authenticating
 
 There are two methods of authenticating against an LDAP directory.
 
-#### Method 1: Direct binding
+### Method 1: Direct binding
 
 This is by far the easiest method to use, and requires minimal configuration.
 In this method, the username and password provided during authentication are
@@ -93,7 +93,7 @@ If using either of these settings, set `AUTH_LDAP_BIND_TEMPLATE` to `None`. You
 will almost certainly want to change the `AUTH_LDAP_UID_ATTRIB` to
 `sAMAccountName`.
 
-#### Method 2: Search and bind
+### Method 2: Search and bind
 
 The second method is more flexible but requires more directory-specific
 configuration: it allows you to filter users by any valid LDAP filter, across a
@@ -101,7 +101,7 @@ directory tree.
 
 It is yet to be implemented in this library. See [issue #2](https://github.com/sjkingo/django_auth_ldap3/issues/2).
 
-### Group membership
+## Group membership
 
 Sometimes it is desirable to restrict authentication to users that are members
 of a specific LDAP group. This may be accomplished by setting the
@@ -123,7 +123,7 @@ example:
 AUTH_LDAP_ADMIN_GROUP = 'cn=Admin Users,ou=Groups,dc=example,dc=com'
 ```
 
-### Example configuration for OpenLDAP
+## Example configuration for OpenLDAP
 
 ```
 AUTH_LDAP_URI = 'ldap://localhost:389'
@@ -133,7 +133,7 @@ AUTH_LDAP_BIND_TEMPLATE = 'uid={username},' + AUTH_LDAP_BASE_DN
 
 The last line is only required if the bind template differs from the default.
 
-### Example configuration for Active Directory
+## Example configuration for Active Directory
 
 ```
 AUTH_LDAP_URI = 'ldap://DC1.example.com:389'
@@ -143,3 +143,68 @@ AUTH_LDAP_USERNAME_PREFIX = 'DOMAIN\\'
 AUTH_LDAP_UID_ATTRIB = 'sAMAccountName'
 ```
 
+## Configuration reference
+
+### Required settings
+
+#### `AUTH_LDAP_BASE_DN`
+
+Default: `'dc=example,dc=com'`
+
+**Required.** The base container to perform any subtree searches from.
+
+#### `AUTH_LDAP_BIND_TEMPLATE`
+
+Default: `'uid={username},{base_dn}'`
+
+*Required.* Template used to construct the distinguished name of the user to authenticate.
+
+Valid substitution specifiers are:
+
+* `{username}` (required): the username being authenticated
+* `{base_dn}`: will be substituted for `AUTH_LDAP_BASE_DN`
+
+#### `URI`
+
+Default: `'ldap://localhost'`
+
+**Required.** A valid LDAP URI that specifies a connection to a directory server.
+
+### Optional settings
+
+#### `AUTH_LDAP_ADMIN_GROUP`
+
+Default: `None`
+
+*Optional.* Distinguished name of the group of users allowed to access the admin area, or `None`
+to deny all.
+
+#### `AUTH_LDAP_LOGIN_GROUP`
+
+Default: `'*'`
+
+*Optional.* Restrict authentication to users that are a member of this group
+(distinguished name). `'*'` indicates any user may authenticate.
+
+#### `AUTH_LDAP_UID_ATTRIB`
+
+Default: `'uid'`
+
+*Optional.* The unique attribute in the directory that stores the username. For
+Active Directory this will be `sAMAccountName`.
+
+#### `AUTH_LDAP_USERNAME_PREFIX`
+
+Default: `None`
+
+*Optional.* String to prefix the username before binding. This is used for `DOMAIN\user` principals.
+
+You must set `AUTH_LDAP_BIND_TEMPLATE` to `None` when using this option.
+
+#### `AUTH_LDAP_USERNAME_SUFFIX`
+
+Default: `None`
+
+*Optional.* String to suffix the username before binding. This is used for `user@domain` principals.
+
+You must set `AUTH_LDAP_BIND_TEMPLATE` to `None` when using this option.

@@ -183,7 +183,8 @@ class LDAPBackend(object):
         # Construct the user to bind as
         if settings.BIND_TEMPLATE:
             # Full CN
-            ldap_bind_user = settings.BIND_TEMPLATE.format(username=username)
+            ldap_bind_user = settings.BIND_TEMPLATE.format(username=username,
+                    base_dn=settings.BASE_DN)
         elif settings.USERNAME_PREFIX:
             # Prepend a prefix: useful for DOMAIN\user
             ldap_bind_user = settings.USERNAME_PREFIX + username

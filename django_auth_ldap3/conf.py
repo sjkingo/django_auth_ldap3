@@ -13,7 +13,7 @@ class LDAPSettings(object):
     defaults = {
         'ADMIN_GROUP': None,
         'BASE_DN': 'dc=example,dc=com',
-        'BIND_TEMPLATE': 'uid={username},dc=example,dc=com',
+        'BIND_TEMPLATE': 'uid={username},{base_dn}',
         'LOGIN_GROUP': '*',
         'UID_ATTRIB': 'uid',
         'USERNAME_PREFIX': None,
