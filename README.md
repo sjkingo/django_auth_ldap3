@@ -68,8 +68,6 @@ In this method, the username and password provided during authentication are
 used to bind directly to the directory. If the bind fails, the
 username/password combination (or `AUTH_LDAP_BIND_TEMPLATE` [1]) is incorrect.
 
-This authentication method is best suited toward an OpenLDAP directory.
-
 [1] When direct binding, there is no way to distinguish between an incorrect
 username/password and the bind template being incorrect, since both result in
 an invalid bind.
