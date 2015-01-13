@@ -157,7 +157,7 @@ Default: `'dc=example,dc=com'`
 
 Default: `'uid={username},{base_dn}'`
 
-*Required.* Template used to construct the distinguished name of the user to authenticate.
+**Required.** Template used to construct the distinguished name of the user to authenticate.
 
 Valid substitution specifiers are:
 
