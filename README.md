@@ -1,16 +1,18 @@
 # django_auth_ldap3
 
-`django_auth_ldap3` is a library for connecting Django's authentication system
-to an LDAP directory.  Unlike other similar libraries, it uses the excellent
-`ldap3` pure-Python library.  It has a sane default configuration that requires
-minimal customisation and has been tested against OpenLDAP and Active
-Directory.
+This is a small library for connecting Django's authentication system to an
+LDAP directory.  Unlike other similar libraries, it and its dependencies are
+pure-Python and do not require any special system headers to run, making it
+perfect for running in a hosted virtualenv.
+
+It has a sane default configuration that requires minimal customization, and
+has been tested against OpenLDAP and Microsoft's Active Directory.
 
 It supports Django 1.7+ and Python 3.3+.
 
 ### Installation
 
-The easiest way is to install from PyPi using pip:
+The easiest way is to install from [PyPi](https://pypi.python.org/pypi/django_auth_ldap3) using pip:
 
 ```
 $ pip install django_auth_ldap3
@@ -24,7 +26,7 @@ $ pip install -e git+https://github.com/sjkingo/django_auth_ldap3.git#egg=django
 
 ### Base configuration
 
-1. First, add the LDAP backend to Django's `AUTHENTICATION_BACKENDS` tuple:
+1. First, add the LDAP backend to Django's `AUTHENTICATION_BACKENDS` tuple in `settings.py`:
 
    ```
    AUTHENTICATION_BACKENDS = (
@@ -33,29 +35,33 @@ $ pip install -e git+https://github.com/sjkingo/django_auth_ldap3.git#egg=django
    )
    ```
 
-   We specify `ModelBackend` as a fallback in case any superusers are defined locally in the database.
+   We specify `ModelBackend` here as a fallback in case any superusers are defined locally in the database.
 
-2. `django_auth_ldap3` requires at a minimum 2 settings to specify the connection to the directory server:
+2. Point the configuration to the directory server with only two required settings:
 
    ```
    AUTH_LDAP_URI = 'ldap://localhost:389'
    AUTH_LDAP_BASE_DN = 'dc=example,dc=com'
    ```
 
-   Any valid LDAP URI is allowed for the `AUTH_LDAP_URI` setting, with the port
-   being optional and will default to 389 if not specified. `AUTH_LDAP_BASE_DN`
-   must be set to the base container to perform any subtree searches from.
+   * Any valid [LDAP
+   URI](https://www.centos.org/docs/5/html/CDS/ag/8.0/LDAP_URLs-Examples_of_LDAP_URLs.html)
+   is allowed for the `AUTH_LDAP_URI` setting (the port is optional and will
+   default to 389 if not specified).
+   
+   * `AUTH_LDAP_BASE_DN` must be set to the base container to perform any subtree
+   searches from.
 
 ### Configuration for authenticating
 
-There are two methods of authenticating against an LDAP directory:
+There are two methods of authenticating against an LDAP directory.
 
 #### Method 1: Direct binding
 
 This is by far the easiest method to use, and requires minimal configuration.
 In this method, the username and password provided during authentication are
 used to bind directly to the directory. If the bind fails, the
-username/password combination (or bind DN template [1]) is incorrect.
+username/password combination (or `AUTH_LDAP_BIND_TEMPLATE` [1]) is incorrect.
 
 This authentication method is best suited toward an OpenLDAP directory.
 
@@ -63,20 +69,18 @@ This authentication method is best suited toward an OpenLDAP directory.
 username/password and the bind template being incorrect, since both result in
 an invalid bind.
 
-Only 1 extra setting is required for direct binding to an OpenLDAP directory:
+Only one extra setting is required for direct binding to an OpenLDAP directory:
 
 * `AUTH_LDAP_BIND_TEMPLATE`: the template to use when constructing the user to bind. For example: `uid={username},ou=People`. It must contain `{username}` somewhere which will be substituted for the username that is being authenticated.
 
-Alternatively you may wish to change the attribute that matches the Django username - by defualt it is `uid`:
+Alternatively you may wish to change the attribute that matches the Django username - by default it is `uid`:
 
 * `AUTH_LDAP_UID_ATTRIB`: the attribute used for a unique username (e.g. `uid` or `sAMAccountName`)
 
-The key requirement for direct binding is that a unique common name must be able
-to be constructed from a given username, for instance:
+The key requirement for direct binding is that a distinguished name be able to
+be constructed from a given username, for instance:
 
-```
-'jsmith' -> 'uid=jsmith,ou=People,dc=example,dc=com'
-```
+* username `'jsmith'` is represented with a distinguished name of `'uid=jsmith,ou=People,dc=example,dc=com'`
 
 A point to note here is that if you are using Active Directory, you may bind
 with a full user principal instead, such as `DOMAIN\user` or `user@domain`.
@@ -95,24 +99,25 @@ The second method is more flexible but requires more directory-specific
 configuration: it allows you to filter users by any valid LDAP filter, across a
 directory tree.
 
-It is yet to be implemented in this library.
+It is yet to be implemented in this library. See [issue #2](https://github.com/sjkingo/django_auth_ldap3/issues/2).
 
 ### Group membership
 
-Sometimes it is desirable to restrict logins to users that are members of a
-specific group. This may be accomplished by setting the `AUTH_LDAP_LOGIN_GROUP`
-setting. By default it is set to `'*'`; any valid user may authenticate. If you
-wish to restrict this, change the setting to the full common name of a group,
-for example:
+Sometimes it is desirable to restrict authentication to users that are members
+of a specific LDAP group. This may be accomplished by setting the
+`AUTH_LDAP_LOGIN_GROUP` setting. By default it is set to `'*'`; any valid user
+may authenticate. If you wish to restrict this, change the setting to the
+distinguished name of a group, for example:
 
 ```
 AUTH_LDAP_LOGIN_GROUP = 'cn=Web Users,ou=Groups,dc=example,dc=com'
 ```
 
-You may also allow some users to log in to the Django admin by setting the
-`AUTH_LDAP_ADMIN_GROUP` setting. By default this is set to `None`, indicating
-no user may log in to the admin. If you wish to allow this, change the setting
-to the full common name of a group, for example:
+You may also allow a subset of users to authenticate to the Django admin
+interface by setting the `AUTH_LDAP_ADMIN_GROUP` setting. By default this is
+set to `None`, indicating no user may have access to the admin. If you wish to
+allow access, change the setting to the distinguished name of a group, for
+example:
 
 ```
 AUTH_LDAP_ADMIN_GROUP = 'cn=Admin Users,ou=Groups,dc=example,dc=com'
