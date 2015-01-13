@@ -1,11 +1,12 @@
 # django_auth_ldap3
 
-django_auth_ldap3 is a library for connecting Django's authentication system to
-an LDAP directory.  Unlike other similar libraries, it uses the excellent
-`ldap3` pure-Python library and supports Django 1.7+ and Python 3.3+.
+`django_auth_ldap3` is a library for connecting Django's authentication system
+to an LDAP directory.  Unlike other similar libraries, it uses the excellent
+`ldap3` pure-Python library.  It has a sane default configuration that requires
+minimal customisation and has been tested against OpenLDAP and Active
+Directory.
 
-It has a sane default configuration that requires minimal customisation and has
-been tested against OpenLDAP and Active Directory.
+It supports Django 1.7+ and Python 3.3+.
 
 ### Installation
 
@@ -18,7 +19,7 @@ $ pip install django_auth_ldap3
 Alternatively you may install from the latest commit on the `master` branch:
 
 ```
-$ pip install -e git+https://github.com/sjkingo/django-auth-ldap3.git#egg=django_auth_ldap3
+$ pip install -e git+https://github.com/sjkingo/django_auth_ldap3.git#egg=django_auth_ldap3
 ```
 
 ### Base configuration
