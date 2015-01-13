@@ -8,7 +8,7 @@ perfect for running in a hosted virtualenv.
 It has a sane default configuration that requires minimal customization, and
 has been tested against OpenLDAP and Microsoft's Active Directory.
 
-It supports Django 1.7+ and Python 3.3+ and is licensed under the [BSD license](https://github.com/sjkingo/django_auth_ldap3/blob/master/LICENSE).
+It supports Django 1.7+ and is licensed under the [BSD license](https://github.com/sjkingo/django_auth_ldap3/blob/master/LICENSE).
 
 [![Latest Version](https://pypip.in/version/django_auth_ldap3/badge.svg?text=pypi)](https://pypi.python.org/pypi/django_auth_ldap3/)
 [![Supported Python versions](https://pypip.in/py_versions/django_auth_ldap3/badge.svg)](https://pypi.python.org/pypi/django_auth_ldap3/)
