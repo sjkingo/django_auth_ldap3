@@ -11,8 +11,10 @@ class LDAPSettings(object):
 
     prefix = 'AUTH_LDAP_'
     defaults = {
+        'ADMIN_GROUP': None,
         'BASE_DN': 'dc=example,dc=com',
         'BIND_TEMPLATE': 'uid={username},dc=example,dc=com',
+        'LOGIN_GROUP': '*',
         'UID_ATTRIB': 'uid',
         'USERNAME_PREFIX': None,
         'USERNAME_SUFFIX': None,

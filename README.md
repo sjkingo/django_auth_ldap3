@@ -97,6 +97,27 @@ directory tree.
 
 It is yet to be implemented in this library.
 
+### Group membership
+
+Sometimes it is desirable to restrict logins to users that are members of a
+specific group. This may be accomplished by setting the `AUTH_LDAP_LOGIN_GROUP`
+setting. By default it is set to `'*'`; any valid user may authenticate. If you
+wish to restrict this, change the setting to the full common name of a group,
+for example:
+
+```
+AUTH_LDAP_LOGIN_GROUP = 'cn=Web Users,ou=Groups,dc=example,dc=com'
+```
+
+You may also allow some users to log in to the Django admin by setting the
+`AUTH_LDAP_ADMIN_GROUP` setting. By default this is set to `None`, indicating
+no user may log in to the admin. If you wish to allow this, change the setting
+to the full common name of a group, for example:
+
+```
+AUTH_LDAP_ADMIN_GROUP = 'cn=Admin Users,ou=Groups,dc=example,dc=com'
+```
+
 ### Example configuration for OpenLDAP
 
 ```

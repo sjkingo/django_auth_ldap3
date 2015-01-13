@@ -14,9 +14,11 @@ class LDAPUser(object):
     A class representing an LDAP user returned from the directory.
     """
 
+    connection = None
     _attrib_keys = [settings.UID_ATTRIB, 'cn', 'givenName', 'sn', 'mail']
 
-    def __init__(self, attributes):
+    def __init__(self, connection, attributes):
+        self.connection = connection
         for k, v in attributes.items():
             # Flatten any lists into their first element
             if type(v) == list and len(v) >= 1:
@@ -27,6 +29,9 @@ class LDAPUser(object):
         for k in self._attrib_keys:
             if not hasattr(self, k):
                 setattr(self, k, None)
+
+    def __str__(self):
+        return getattr(self, settings.UID_ATTRIB)
 
 class LDAPBackend(object):
     """
@@ -52,10 +57,23 @@ class LDAPBackend(object):
         # Authenticate against the LDAP backend and return an LDAPUser.
         ldap_user = self.retrieve_ldap_user(username, password)
         if ldap_user is None:
+            logger.debug('Authentication failed for {}'.format(ldap_user))
             return None
 
         # If we get here, authentication is successful and we have an LDAPUser
-        # instance populated with the user's attributes.
+        # instance populated with the user's attributes. We still need to check
+        # group membership and populate a local User model.
+
+        # Check LDAP group membership before creating a local user. The default
+        # is '*' so any user can log in.
+        if not self.check_group_membership(ldap_user, settings.LOGIN_GROUP):
+            logger.debug('Failed group membership test: {} !memberOf {}'.format(ldap_user, settings.LOGIN_GROUP))
+            return None
+
+        # Check if this user is part of the admin group.
+        admin = False
+        if settings.ADMIN_GROUP:
+            admin = self.check_group_membership(ldap_user, settings.ADMIN_GROUP)
 
         # Get or create the User object in Django's auth, populating it with
         # fields from the LDAPUser. Note we set the password to a random hash
@@ -66,7 +84,7 @@ class LDAPBackend(object):
                 'last_name': ldap_user.sn,
                 'email': ldap_user.mail,
                 'is_superuser': False,
-                'is_staff': False,
+                'is_staff': admin,
                 'is_active': True
         })
 
@@ -75,18 +93,56 @@ class LDAPBackend(object):
             user.first_name = ldap_user.givenName
             user.last_name = ldap_user.sn
             user.email = ldap_user.mail
+            user.is_staff = admin
             user.save()
 
         return user
 
     def get_user(self, user_id):
         """
-        Required for Django auth. Return the user's
+        Required for Django auth.
         """
         try:
-            return User.objects.get(username=user_id)
+            return User.objects.get(pk=user_id)
         except User.DoesNotExist:
             return None
+
+    def check_group_membership(self, ldap_user, group_dn):
+        """
+        Check the LDAP user to see if it is a member of the given group.
+        
+        This is straightforward with OpenLDAP but tricky with AD as due to
+        the weird way AD handles "primary" group membership, we must test for
+        a separate attribute as well as the usual 'memberof' as the primary
+        group is not returned with that filter.
+        """
+
+        # Don't bother search directory if '*' was given: this denotes any group
+        # so pass the test immediately.
+        if group_dn == '*':
+            return True
+
+        # Hack for AD: fetch the group's attributes and check for the
+        # primaryGroupToken. This will return 0 results in OpenLDAP and hence
+        # be ignored.
+        pgt = None
+        group_attribs = self.search_ldap(ldap_user.connection, '(distinguishedName={})' \
+                .format(group_dn), attributes=['primaryGroupToken'])
+        if group_attribs:
+            pgt = group_attribs.get('primaryGroupToken', None)
+            if type(pgt) == list:
+                pgt = pgt[0]
+
+        # Now perform our group membership test. If the primary group token is not-None,
+        # then we wrap the filter in an OR and test for that too.
+        search_filter = '(&(objectClass=user)({}={})(memberof={}))'.format(
+                settings.UID_ATTRIB, str(ldap_user), group_dn)
+        if pgt:
+            search_filter = '(|{}(primaryGroupID={}))'.format(search_filter, pgt)
+        
+        # Return True if user is a member of group
+        r = self.search_ldap(ldap_user.connection, search_filter)
+        return r is not None
 
     def retrieve_ldap_user(self, username, password):
         """
@@ -167,4 +223,4 @@ class LDAPBackend(object):
             return None
 
         # Construct an LDAPUser instance for this user
-        return LDAPUser(attributes)
+        return LDAPUser(c, attributes)
