@@ -128,8 +128,10 @@ AUTH_LDAP_ADMIN_GROUP = 'cn=Admin Users,ou=Groups,dc=example,dc=com'
 ```
 AUTH_LDAP_URI = 'ldap://localhost:389'
 AUTH_LDAP_BASE_DN = 'ou=People,dc=example,dc=com'
-AUTH_LDAP_BIND_TEMPLATE = 'uid={username},ou=People,dc=example,dc=com'
+AUTH_LDAP_BIND_TEMPLATE = 'uid={username},' + AUTH_LDAP_BASE_DN
 ```
+
+The last line is only required if the bind template differs from the default.
 
 ### Example configuration for Active Directory
 
