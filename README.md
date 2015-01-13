@@ -52,7 +52,7 @@ A full configuration reference of all settings [is available](https://github.com
    * Any valid [LDAP
    URI](https://www.centos.org/docs/5/html/CDS/ag/8.0/LDAP_URLs-Examples_of_LDAP_URLs.html)
    is allowed for the `AUTH_LDAP_URI` setting (the port is optional and will
-   default to 389 if not specified).
+   default to 389 if not specified). TLS is not yet supported (see [issue #3](https://github.com/sjkingo/django_auth_ldap3/issues/3)).
    
    * `AUTH_LDAP_BASE_DN` must be set to the base container to perform any subtree
    searches from.
@@ -80,14 +80,15 @@ Alternatively you may wish to change the attribute that matches the Django usern
 
 * `AUTH_LDAP_UID_ATTRIB`: the attribute used for a unique username (e.g. `uid` or `sAMAccountName`)
 
-The key requirement for direct binding is that a distinguished name be able to
+The key requirement for direct binding is that a distinguished name is able to
 be constructed from a given username, for instance:
 
-* username `'jsmith'` is represented with a distinguished name of `'uid=jsmith,ou=People,dc=example,dc=com'`
+* username `'jsmith'` is known with a distinguished name of `'uid=jsmith,ou=People,dc=example,dc=com'` in the directory
 
-A point to note here is that if you are using Active Directory, you may bind
-with a full user principal instead, such as `DOMAIN\user` or `user@domain`.
-This can be accomplished by setting one of the following settings:
+A point to note here is that if you are using Active Directory, you may tell
+the backend to bind with a full user principal instead, such as `DOMAIN\user`
+or `user@domain`.  This can be accomplished by setting one of the following
+settings:
 
 * `AUTH_LDAP_USERNAME_PREFIX`: e.g. `DOMAIN\`
 * `AUTH_LDAP_USERNAME_SUFFIX`: e.g. `@domain.com`
@@ -131,7 +132,7 @@ AUTH_LDAP_ADMIN_GROUP = 'cn=Admin Users,ou=Groups,dc=example,dc=com'
 ```
 AUTH_LDAP_URI = 'ldap://localhost:389'
 AUTH_LDAP_BASE_DN = 'ou=People,dc=example,dc=com'
-AUTH_LDAP_BIND_TEMPLATE = 'uid={username},' + AUTH_LDAP_BASE_DN
+AUTH_LDAP_BIND_TEMPLATE = 'uid={username},{base_dn}'
 ```
 
 The last line is only required if the bind template differs from the default.
@@ -170,6 +171,8 @@ Valid substitution specifiers are:
 Default: `'ldap://localhost'`
 
 **Required.** A valid LDAP URI that specifies a connection to a directory server.
+
+TLS is not yet supported (see [issue #3](https://github.com/sjkingo/django_auth_ldap3/issues/3)).
 
 #### `AUTH_LDAP_ADMIN_GROUP`
 
