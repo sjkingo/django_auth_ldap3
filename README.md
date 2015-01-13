@@ -167,7 +167,7 @@ Valid substitution specifiers are:
 * `{username}` (required): the username being authenticated
 * `{base_dn}`: will be substituted for `AUTH_LDAP_BASE_DN`
 
-#### `URI`
+#### `AUTH_LDAP_URI`
 
 Default: `'ldap://localhost'`
 
