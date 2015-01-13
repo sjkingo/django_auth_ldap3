@@ -1,5 +1,4 @@
 from django_auth_ldap3.conf import settings
-from django_auth_ldap3.exceptions import *
 
 from django.contrib.auth.models import User
 from ldap3.core.exceptions import LDAPSocketOpenError
