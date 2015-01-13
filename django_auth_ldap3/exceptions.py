@@ -1,0 +1,2 @@
+class UnsupportedProtocol(Exception):
+    pass
