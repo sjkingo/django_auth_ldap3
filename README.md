@@ -7,9 +7,23 @@ an LDAP directory.  Unlike other similar libraries, it uses the excellent
 It has a sane default configuration that requires minimal customisation and has
 been tested against OpenLDAP and Active Directory.
 
+### Installation
+
+The easiest way is to install from PyPi using pip:
+
+```
+$ pip install django_auth_ldap3
+```
+
+Alternatively you may install from the latest commit on the `master` branch:
+
+```
+$ pip install -e git+https://github.com/sjkingo/django-auth-ldap3.git#egg=django_auth_ldap3
+```
+
 ### Base configuration
 
-1. You must add the LDAP backend to Django's `AUTHENTICATION_BACKENDS` tuple:
+1. First, add the LDAP backend to Django's `AUTHENTICATION_BACKENDS` tuple:
 
    ```
    AUTHENTICATION_BACKENDS = (
@@ -20,13 +34,16 @@ been tested against OpenLDAP and Active Directory.
 
    We specify `ModelBackend` as a fallback in case any superusers are defined locally in the database.
 
-2. Configure the LDAP URI to the directory server. It is recommended to use a DNS name:
+2. `django_auth_ldap3` requires at a minimum 2 settings to specify the connection to the directory server:
 
    ```
    AUTH_LDAP_URI = 'ldap://localhost:389'
+   AUTH_LDAP_BASE_DN = 'dc=example,dc=com'
    ```
 
-   Any valid LDAP URI is allowed here, and the port is optional and will default to 389 if not specified.
+   Any valid LDAP URI is allowed for the `AUTH_LDAP_URI` setting, with the port
+   being optional and will default to 389 if not specified. `AUTH_LDAP_BASE_DN`
+   must be set to the base container to perform any subtree searches from.
 
 ### Configuration for authenticating
 
@@ -45,9 +62,8 @@ This authentication method is best suited toward an OpenLDAP directory.
 username/password and the bind template being incorrect, since both result in
 an invalid bind.
 
-Only 2 extra settings are required for direct binding:
+Only 1 extra setting is required for direct binding to an OpenLDAP directory:
 
-* `AUTH_LDAP_BASE_DN`: the base container to perform a subtree search from
 * `AUTH_LDAP_BIND_TEMPLATE`: the template to use when constructing the user to bind. For example: `uid={username},ou=People`. It must contain `{username}` somewhere which will be substituted for the username that is being authenticated.
 
 Alternatively you may wish to change the attribute that matches the Django username - by defualt it is `uid`:
