@@ -8,7 +8,10 @@ perfect for running in a hosted virtualenv.
 It has a sane default configuration that requires minimal customization, and
 has been tested against OpenLDAP and Microsoft's Active Directory.
 
-It supports Django 1.7+ and Python 3.3+.
+It supports Django 1.7+ and Python 3.3+ and is licensed under the [BSD license](https://github.com/sjkingo/django_auth_ldap3/blob/master/LICENSE).
+
+[![Latest Version](https://pypip.in/version/django_auth_ldap3/badge.svg?text=pypi)](https://pypi.python.org/pypi/django_auth_ldap3/)
+[![Supported Python versions](https://pypip.in/py_versions/django_auth_ldap3/badge.svg)](https://pypi.python.org/pypi/django_auth_ldap3/)
 
 ## Installation
 
@@ -25,6 +28,8 @@ $ pip install -e git+https://github.com/sjkingo/django_auth_ldap3.git#egg=django
 ```
 
 ## Base configuration
+
+A full configuration reference of all settings [is available](https://github.com/sjkingo/django_auth_ldap3#configuration-reference).
 
 1. First, add the LDAP backend to Django's `AUTHENTICATION_BACKENDS` tuple in `settings.py`:
 
@@ -145,8 +150,6 @@ AUTH_LDAP_UID_ATTRIB = 'sAMAccountName'
 
 ## Configuration reference
 
-### Required settings
-
 #### `AUTH_LDAP_BASE_DN`
 
 Default: `'dc=example,dc=com'`
@@ -169,8 +172,6 @@ Valid substitution specifiers are:
 Default: `'ldap://localhost'`
 
 **Required.** A valid LDAP URI that specifies a connection to a directory server.
-
-### Optional settings
 
 #### `AUTH_LDAP_ADMIN_GROUP`
 
