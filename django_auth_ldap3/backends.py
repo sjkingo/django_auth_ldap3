@@ -1,8 +1,10 @@
 from django_auth_ldap3.conf import settings
 from django_auth_ldap3.exceptions import *
 
-import ldap3
+from django.contrib.auth.models import User
 from ldap3.core.exceptions import LDAPSocketOpenError
+import hashlib
+import ldap3
 import logging
 
 logger = logging.getLogger('django_auth_ldap3')
@@ -42,20 +44,49 @@ class LDAPBackend(object):
 
     def authenticate(self, username=None, password=None):
         """
-        Required for Django auth.
+        Required for Django auth. Authenticate the uesr against the LDAP
+        backend and populate the local User model if this is the first
+        time the user has authenticated.
         """
+
+        # Authenticate against the LDAP backend and return an LDAPUser.
         ldap_user = self.retrieve_ldap_user(username, password)
         if ldap_user is None:
             return None
 
-        # TODO: get_or_create() against django.models.User
+        # If we get here, authentication is successful and we have an LDAPUser
+        # instance populated with the user's attributes.
+
+        # Get or create the User object in Django's auth, populating it with
+        # fields from the LDAPUser. Note we set the password to a random hash
+        # as authentication should never occur directly off this user.
+        user, created = User.objects.get_or_create(username=username, defaults={
+                'password': hashlib.sha1().hexdigest(),
+                'first_name': ldap_user.givenName,
+                'last_name': ldap_user.sn,
+                'email': ldap_user.mail,
+                'is_superuser': False,
+                'is_staff': False,
+                'is_active': True
+        })
+
+        # If the user wasn't created, update its fields from the directory.
+        if not created:
+            user.first_name = ldap_user.givenName
+            user.last_name = ldap_user.sn
+            user.email = ldap_user.mail
+            user.save()
+
+        return user
 
     def get_user(self, user_id):
         """
-        Required for Django auth.
+        Required for Django auth. Return the user's
         """
-        # TODO: get LDAP user with model?
-        pass
+        try:
+            return User.objects.get(username=user_id)
+        except User.DoesNotExist:
+            return None
 
     def retrieve_ldap_user(self, username, password):
         """
