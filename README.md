@@ -17,6 +17,7 @@ It is known to work with:
 
 [![Latest Version](https://pypip.in/version/django_auth_ldap3/badge.svg?text=pypi)](https://pypi.python.org/pypi/django_auth_ldap3/)
 [![Supported Python versions](https://pypip.in/py_versions/django_auth_ldap3/badge.svg)](https://pypi.python.org/pypi/django_auth_ldap3/)
+[![License](https://pypip.in/license/django_auth_ldap3/badge.svg)](https://pypi.python.org/pypi/django_auth_ldap3/)
 
 ## Installation
 
