@@ -15,9 +15,8 @@ It is known to work with:
 * Python 2.7, 3.3+
 * Django 1.6.10, 1.7+
 
-[![Latest Version](https://pypip.in/version/django_auth_ldap3/badge.svg?text=pypi)](https://pypi.python.org/pypi/django_auth_ldap3/)
-[![Supported Python versions](https://pypip.in/py_versions/django_auth_ldap3/badge.svg)](https://pypi.python.org/pypi/django_auth_ldap3/)
-[![License](https://pypip.in/license/django_auth_ldap3/badge.svg)](https://pypi.python.org/pypi/django_auth_ldap3/)
+[![Latest Version](http://img.shields.io/pypi/v/django_auth_ldap3.svg)](https://pypi.python.org/pypi/django_auth_ldap3/)
+[![License](https://img.shields.io/badge/license-BSD-blue.svg)](https://pypi.python.org/pypi/django_auth_ldap3/)
 
 ## Installation
 
