@@ -137,7 +137,7 @@ class LDAPBackend(object):
         search_filter = '(&(objectClass=user)({}={})(memberof={}))'.format(
                 settings.UID_ATTRIB, str(ldap_user), group_dn)
         if pgt:
-            search_filter = '(|{}(primaryGroupID={}))'.format(search_filter, pgt)
+            search_filter = '(|{}(&(cn={})(primaryGroupID={})))'.format(search_filter, ldap_user.cn, pgt)
         
         # Return True if user is a member of group
         r = self.search_ldap(ldap_user.connection, search_filter)
