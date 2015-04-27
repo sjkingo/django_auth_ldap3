@@ -16,7 +16,7 @@ It is known to work with:
 * Django 1.6.10, 1.7+
 
 [![Latest Version](http://img.shields.io/pypi/v/django_auth_ldap3.svg)](https://pypi.python.org/pypi/django_auth_ldap3/)
-[![License](https://img.shields.io/badge/license-BSD-blue.svg)](https://pypi.python.org/pypi/django_auth_ldap3/)
+[![License](https://img.shields.io/badge/license-BSD-blue.svg)](https://github.com/sjkingo/django_auth_ldap3/blob/master/LICENSE)
 
 ## Installation
 
