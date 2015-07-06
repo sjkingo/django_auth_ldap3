@@ -1,6 +1,11 @@
 Changelog
 =========
 
+### 0.9.3 - 2015-07-06
+
+* Fix bug with case-insensitive LDAP usernames creating duplicate users in
+  Django's auth database (@rmassoth, @sjkingo) - [issue #7](https://github.com/sjkingo/django_auth_ldap3/issues/7)
+
 ### 0.9.2 - 2015-04-27
 
 * Fix bug where primary group membership in AD would succeed regardless
