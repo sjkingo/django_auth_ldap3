@@ -60,7 +60,7 @@ A full configuration reference of all settings [is available](https://github.com
    URI](https://www.centos.org/docs/5/html/CDS/ag/8.0/LDAP_URLs-Examples_of_LDAP_URLs.html)
    is allowed for the `AUTH_LDAP_URI` setting (the port is optional and will
    default to 389 if not specified). TLS is not yet supported (see [issue #3](https://github.com/sjkingo/django_auth_ldap3/issues/3)).
-   
+
    * `AUTH_LDAP_BASE_DN` must be set to the base container to perform any subtree
    searches from.
 
@@ -133,6 +133,22 @@ example:
 ```
 AUTH_LDAP_ADMIN_GROUP = 'cn=Admin Users,ou=Groups,dc=example,dc=com'
 ```
+
+Should you wish to map LDAP groups to Django groups, you can use the `AUTH_LDAP_GROUP_MAP`
+setting.  By default it is set to `None`, indicating that no mapping will occur.  The mapping is
+done in the form of a dict where the keys are LDAP group DNs and the values are sequences of Django groups,
+for example:
+
+```
+AUTH_LDAP_GROUP_MAP = {
+    'cn=Admin Users,ou=Groups,dc=example,dc=com': ('site_admins', 'editors'),
+    'cn=Authors,ou=Groups,dc=example,dc=com': ('editors',)
+}
+```
+
+Note that any Django groups you list will be controlled by this mapping, and can't be manually managed,
+because users will be added or removed from the groups according to their LDAP group memberships at login.
+Any Django groups not included in the mappings will be unaffected.
 
 ## Example configuration for OpenLDAP
 
