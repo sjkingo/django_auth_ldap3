@@ -253,7 +253,7 @@ class LDAPBackend(object):
             else:
                 groups['remove'] += [group for group in django_groups if group not in groups['remove']]
 
-        for operation in ('add', 'remove'):
+        for operation in ('remove', 'add'):
             grouplist = groups[operation]
             for group in grouplist:
                 try:
