@@ -14,6 +14,7 @@ class LDAPSettings(object):
         'ADMIN_GROUP': None,
         'BASE_DN': 'dc=example,dc=com',
         'BIND_TEMPLATE': 'uid={username},{base_dn}',
+        'GROUP_MAP': None,
         'LOGIN_GROUP': '*',
         'UID_ATTRIB': 'uid',
         'USERNAME_PREFIX': None,
