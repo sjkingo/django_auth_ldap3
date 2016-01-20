@@ -1,10 +1,12 @@
 from django_auth_ldap3.conf import settings
 
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from ldap3.core.exceptions import LDAPSocketOpenError
 import hashlib
 import ldap3
 import logging
+
+User = get_user_model()
 
 logger = logging.getLogger('django_auth_ldap3')
 
@@ -118,7 +120,7 @@ class LDAPBackend(object):
     def check_group_membership(self, ldap_user, group_dn):
         """
         Check the LDAP user to see if it is a member of the given group.
-        
+
         This is straightforward with OpenLDAP but tricky with AD as due to
         the weird way AD handles "primary" group membership, we must test for
         a separate attribute as well as the usual 'memberof' as the primary
@@ -147,7 +149,7 @@ class LDAPBackend(object):
                 settings.UID_ATTRIB, str(ldap_user), group_dn)
         if pgt:
             search_filter = '(|{}(&(cn={})(primaryGroupID={})))'.format(search_filter, ldap_user.cn, pgt)
-        
+
         # Return True if user is a member of group
         r = self.search_ldap(ldap_user.connection, search_filter)
         return r is not None
