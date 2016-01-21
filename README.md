@@ -15,7 +15,7 @@ It is known to work with:
 * Python 2.7+, 3.3+, 3.4+
 * Django 1.6.10, 1.7+, 1.8+
 
-Note at some point in the future, support for Python 2.7/Django 1.6 will be dropped.
+Note at some point in the future, support for Python 2.7/3.3 and Django 1.6/1.7 will be dropped (see [issue #15](https://github.com/sjkingo/django_auth_ldap3/issues/15)).
 
 [![Latest Version](http://img.shields.io/pypi/v/django_auth_ldap3.svg)](https://pypi.python.org/pypi/django_auth_ldap3/)
 [![License](https://img.shields.io/badge/license-BSD-blue.svg)](https://github.com/sjkingo/django_auth_ldap3/blob/master/LICENSE)
