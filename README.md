@@ -204,6 +204,15 @@ Default: `None`
 *Optional.* Distinguished name of the group of users allowed to access the admin area, or `None`
 to deny all.
 
+#### `AUTH_LDAP_GROUP_MAP`
+
+Default: `None`
+
+*Optional.* Dictionary of LDAP groups to Django groups to perform mapping on.
+See *Group membership*, above, for more details.
+
+*Added in version 0.9.4*
+
 #### `AUTH_LDAP_LOGIN_GROUP`
 
 Default: `'*'`

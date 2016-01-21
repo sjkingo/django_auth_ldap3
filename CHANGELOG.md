@@ -1,6 +1,11 @@
 Changelog
 =========
 
+### 0.9.4 - 2016-01-21
+
+* Use proxy method for getting `User` instance to support Django's custom user models (@alandmoore)
+* New feature `AUTH_LDAP_GROUP_MAP` to map LDAP groups to Django for authorization (@alandmore)
+
 ### 0.9.3 - 2015-07-06
 
 * Fix bug with case-insensitive LDAP usernames creating duplicate users in
