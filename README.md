@@ -242,3 +242,30 @@ Default: `None`
 *Optional.* String to suffix the username before binding. This is used for `user@domain` principals.
 
 You must set `AUTH_LDAP_BIND_TEMPLATE` to `None` when using this option.
+
+*Added in version 0.9.5*
+
+#### `AUTH_LDAP_TLS`
+
+*Optional.* Flag to enable LDAP over TLS. Further options can be configured through `AUTH_LDAP_TLS_CA_CERTS`,
+`AUTH_LDAP_TLS_VALIDATE`, `AUTH_LDAP_TLS_PRIVATE_KEY`, and `AUTH_LDAP_TLS_LOCAL_CERT`.
+
+Default: `False`
+
+#### `AUTH_LDAP_TLS_CA_CERTS`
+*Optional.* String to the location of the file containing the certificates of the certification authorities.
+
+It's checked only if `AUTH_LDAP_TLS_VALIDATE` is set to `True`.
+
+Default: It will use the system wide certificate store.
+
+#### `AUTH_LDAP_TLS_VALIDATE`
+*Optional.* Specifies if the server certificate must be validated.
+
+Default: `True`
+
+#### `AUTH_LDAP_TLS_PRIVATE_KEY`
+*Optional.* Specifies the location for the file with the private key of the client.
+
+#### `AUTH_LDAP_TLS_LOCAL_CERT`
+*Optional.* Specifies the location for the file with the certificate of the server.

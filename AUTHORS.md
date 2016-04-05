@@ -4,3 +4,4 @@
 * @gianlo
 * Ryan Massoth (@rmassoth)
 * Alan D Moore (@alandmoore)
+* Eduardo Castellanos (@_wayo)

@@ -1,5 +1,8 @@
 Changelog
 =========
+### 0.9.5 - 2016-03-30
+
+* New feature `AUTH_LDAP_TLS` allows LDAP connections to be established over TLS (@_wayo)
 
 ### 0.9.4 - 2016-01-21
 

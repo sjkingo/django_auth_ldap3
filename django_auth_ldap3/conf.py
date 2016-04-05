@@ -20,6 +20,11 @@ class LDAPSettings(object):
         'USERNAME_PREFIX': None,
         'USERNAME_SUFFIX': None,
         'URI': 'ldap://localhost',
+        'TLS': False,
+        'TLS_CA_CERTS': None,
+        'TLS_VALIDATE': True,
+        'TLS_PRIVATE_KEY': None,
+        'TLS_LOCAL_CERT': None,
     }
 
     def __init__(self):

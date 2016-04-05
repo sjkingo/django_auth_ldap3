@@ -6,6 +6,7 @@ from ldap3.core.exceptions import LDAPSocketOpenError
 import hashlib
 import ldap3
 import logging
+import ssl
 
 User = get_user_model()
 
@@ -47,7 +48,25 @@ class LDAPBackend(object):
     backend = None
 
     def __init__(self):
-        self.backend = ldap3.Server(settings.URI)
+        tls_config = None
+
+        if settings.TLS:
+            tls_opts = {
+                'validate': ssl.CERT_REQUIRED if settings.TLS_VALIDATE else ssl.CERT_NONE
+            }
+
+            if settings.TLS_CA_CERTS:
+                tls_opts['ca_certs_file'] = settings.TLS_CA_CERTS
+
+            if settings.TLS_PRIVATE_KEY:
+                tls_opts['local_private_key_file'] = settings.TLS_PRIVATE_KEY
+
+            if settings.TLS_LOCAL_CERT:
+                tls_opts['local_certificate_file'] = settings.TLS_LOCAL_CERT
+
+            tls_config = ldap3.Tls(**tls_opts)
+
+        self.backend = ldap3.Server(settings.URI, use_ssl=settings.TLS, tls=tls_config)
 
     def __del__(self):
         # TODO: disconnect?
