@@ -12,8 +12,8 @@ It is licensed under the [BSD license](https://github.com/sjkingo/django_auth_ld
 
 It is known to work with:
 
-* Python 2.7+, 3.3+, 3.4+
-* Django 1.6.10, 1.7+, 1.8+
+* Python 2.7, 3.3-3.5
+* Django 1.6.10, 1.7-1.9
 
 Note at some point in the future, support for Python 2.7/3.3 and Django 1.6/1.7 will be dropped (see [issue #15](https://github.com/sjkingo/django_auth_ldap3/issues/15)).
 
