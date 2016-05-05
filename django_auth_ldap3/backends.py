@@ -31,7 +31,7 @@ class LDAPUser(object):
         # Set any missing attributes
         for k in self._attrib_keys:
             if not hasattr(self, k):
-                setattr(self, k, None)
+                setattr(self, k, '')
 
     def __str__(self):
         return self.username
