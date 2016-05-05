@@ -1,6 +1,12 @@
 Changelog
 =========
 
+### 0.9.6 - 2016-05-05
+
+* Python 3.5 and Django 1.9 officially supported (@sjkingo)
+* #19: Pass missing LDAP fields to Django as blank strings to prevent exception when creating
+  a new user (@alandmore)
+
 ### 0.9.5 - 2016-03-30
 
 * #3: New feature `AUTH_LDAP_TLS` allows LDAP connections to be established over TLS (@_wayo)
