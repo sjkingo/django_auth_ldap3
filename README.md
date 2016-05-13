@@ -61,7 +61,7 @@ A full configuration reference of all settings [is available](https://github.com
    is allowed for the `AUTH_LDAP_URI` setting (the port is optional and will
    default to 389 if not specified).
 
-   * TLS has been supported since [v0.9.5](https://github.com/sjkingo/django_auth_ldap3/releases/tag/v0.9.5).
+   * TLS has been supported since [v0.9.5](https://github.com/sjkingo/django_auth_ldap3/releases/tag/v0.9.5) with `AUTH_LDAP_TLS`.
 
    * `AUTH_LDAP_BASE_DN` must be set to the base container to perform any subtree
    searches from.
@@ -197,7 +197,7 @@ Default: `'ldap://localhost'`
 
 **Required.** A valid LDAP URI that specifies a connection to a directory server.
 
-TLS is not yet supported (see [issue #3](https://github.com/sjkingo/django_auth_ldap3/issues/3)).
+TLS has been supported since [v0.9.5](https://github.com/sjkingo/django_auth_ldap3/releases/tag/v0.9.5) with `AUTH_LDAP_TLS`.
 
 #### `AUTH_LDAP_ADMIN_GROUP`
 
