@@ -59,7 +59,9 @@ A full configuration reference of all settings [is available](https://github.com
    * Any valid [LDAP
    URI](https://www.centos.org/docs/5/html/CDS/ag/8.0/LDAP_URLs-Examples_of_LDAP_URLs.html)
    is allowed for the `AUTH_LDAP_URI` setting (the port is optional and will
-   default to 389 if not specified). TLS has been supported since [v0.9.5](https://github.com/sjkingo/django_auth_ldap3/releases/tag/v0.9.5).
+   default to 389 if not specified).
+
+   * TLS has been supported since [v0.9.5](https://github.com/sjkingo/django_auth_ldap3/releases/tag/v0.9.5).
 
    * `AUTH_LDAP_BASE_DN` must be set to the base container to perform any subtree
    searches from.
