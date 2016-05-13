@@ -269,3 +269,9 @@ Default: `True`
 
 #### `AUTH_LDAP_TLS_LOCAL_CERT`
 *Optional.* Specifies the location for the file with the certificate of the server.
+
+## Caveats
+
+When using this library, it is strongly recommended to not manually
+modify the usernames in the Django user table (either through the admin or modifying a 
+`User.username` field). See issues [#7](https://github.com/sjkingo/django_auth_ldap3/issues/7) and [#9](https://github.com/sjkingo/django_auth_ldap3/issues/9) for more details.
